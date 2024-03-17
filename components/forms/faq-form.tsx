@@ -20,16 +20,18 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useToast } from "../ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(3, { message: "Organization Name must be at least 3 characters" }),
-  address: z.string().min(3, {
-    message: "Organization address must be at least 3 characters",
-  }),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8),
+  screen: z.string(),
+  text: z.string(),
+  url: z.string().url("Invalid youtube URL").optional(),
 });
 
 type FaqFormValues = z.infer<typeof formSchema>;
@@ -51,11 +53,9 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
   const action = initialData ? "Save changes" : "Create";
 
   const defaultValues = {
-    name: "",
-    address: "",
-    email: "",
-    password: "",
-    logo: "",
+    screen: "",
+    text: "",
+    url: "",
   };
 
   const form = useForm<FaqFormValues>({
@@ -136,16 +136,50 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="name"
+              name="screen"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a category"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {[
+                        { label: "Home", value: "home" },
+                        { label: "Shift", value: "shift" },
+                        { label: "Goal", value: "goals" },
+                        { label: "Contest", value: "contest" },
+                      ].map((screen) => (
+                        <SelectItem key={screen.value} value={screen.value}>
+                          {screen.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="text"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Text</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="FAQ name"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="Text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,75 +187,18 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
             />
             <FormField
               control={form.control}
-              name="address"
+              name="url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>URL</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="FAQ address"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder="Email addreess"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />{" "}
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      type="password"
-                      placeholder="Password"
-                      {...field}
-                    />
+                    <Input disabled={loading} placeholder="URL" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          <FormField
-            control={form.control}
-            name="logo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Logo</FormLabel>
-                <FormControl>
-                  {/* <Dropzone
-                    onChange={setFiles}
-                    className="w-full"
-                    fileExtension=".png"
-                  /> */}
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

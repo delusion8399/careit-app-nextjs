@@ -1,5 +1,6 @@
 "use client";
 import BreadCrumb from "@/components/breadcrumb";
+import { FaqForm } from "@/components/forms/faq-form";
 import useEntity from "@/hooks/use-entity";
 import { useEffect } from "react";
 
@@ -28,6 +29,7 @@ export default function Page({ searchParams: { id } }: paramsProps) {
   return (
     <div className="flex-1 space-y-4 p-8">
       <BreadCrumb items={breadcrumbItems} />
+      <FaqForm initialData={entity ?? null} />
     </div>
   );
 }
