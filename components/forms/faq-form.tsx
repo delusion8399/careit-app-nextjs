@@ -37,7 +37,7 @@ const formSchema = z.object({
 type FaqFormValues = z.infer<typeof formSchema>;
 
 interface FaqFormProps {
-  initialData: Organization | null;
+  initialData: any | null;
 }
 
 export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
