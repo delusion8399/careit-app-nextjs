@@ -35,7 +35,6 @@ export default function AuthenticationPage() {
               CAREit lets your frontline workers feel rewarded and get a sense
               of belonging within your organization, reducing worker churn!
             </p>
-            <footer className="text-sm">Sofia Davis</footer>
           </blockquote>
         </div>
       </div>
