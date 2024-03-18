@@ -12,14 +12,12 @@ import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import useEntity from "@/hooks/use-entity";
-import { Organization } from "@/types/organization";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useToast } from "../ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -27,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useToast } from "../ui/use-toast";
+import { AutosizeTextarea } from "../ui/autosize-textarea";
 
 const formSchema = z.object({
   screen: z.string(),
@@ -139,7 +139,7 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
               name="screen"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Screen</FormLabel>
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
@@ -174,19 +174,6 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
 
             <FormField
               control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Text</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="url"
               render={({ field }) => (
                 <FormItem>
@@ -199,6 +186,19 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Text</FormLabel>
+                <FormControl>
+                  <AutosizeTextarea id="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <Button disabled={loading} className="ml-auto" type="submit">
             {action}

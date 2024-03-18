@@ -1,7 +1,7 @@
 const env = process.env.NEXT_PUBLIC_APP_ENV || "local";
 
 const hosts: any = {
-  local: "http://localhost:3003/api",
+  local: "http://localhost:3001/api",
   development: "https://dev.careit.work/api",
   production: "https://app.careit.work/api",
 };
