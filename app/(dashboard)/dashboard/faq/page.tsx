@@ -33,14 +33,14 @@ export default function Page({ searchParams }: paramsProps) {
         <Heading title={`FAQ`} />
 
         <Link
-          href={"/dashboard/faq/new"}
+          href={"/dashboard/faq/create"}
           className={cn(buttonVariants({ variant: "default" }))}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Link>
       </div>
       <FaqTable
-        searchKey="home"
+        searchKey="screen"
         columns={columns}
         data={entities?.data ?? []}
         pageCount={pageCount}
