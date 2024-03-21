@@ -4,7 +4,12 @@ import serviceCaller from "@/lib/service-caller";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-type EntityNames = "organization" | "faq" | "walkthrough";
+type EntityNames =
+  | "organization"
+  | "faq"
+  | "walkthrough"
+  | "goal/children"
+  | "goal";
 
 type FindQueryType = {
   page?: number;
