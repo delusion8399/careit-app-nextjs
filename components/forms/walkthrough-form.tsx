@@ -213,7 +213,9 @@ export const WalkthroughForm: React.FC<WalkthroughFormProps> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {stepValues[form.watch("screen")]?.map((step) => (
+                      {stepValues[
+                        form.watch("screen") as keyof typeof stepValues
+                      ]?.map((step: { label: string; value: string }) => (
                         <SelectItem key={step.value} value={step.value}>
                           {step.label}
                         </SelectItem>
