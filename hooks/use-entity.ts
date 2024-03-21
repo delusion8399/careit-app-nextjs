@@ -4,7 +4,7 @@ import serviceCaller from "@/lib/service-caller";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-type EntityNames = "organization" | "faq" | "faq/get";
+type EntityNames = "organization" | "faq" | "walkthrough";
 
 type FindQueryType = {
   page?: number;
@@ -56,7 +56,7 @@ export default function useEntity<T = any>(entityName: EntityNames) {
   const createMutation = useMutation({
     mutationKey: [`create-${entityName}`],
     mutationFn: (payload) => {
-      return serviceCaller(`/${entityName}`, {
+      return serviceCaller(`${entityName}`, {
         method: "POST",
         body: payload,
       });
@@ -66,7 +66,7 @@ export default function useEntity<T = any>(entityName: EntityNames) {
   const deleteMutation = useMutation({
     mutationKey: [`delete-${entityName}`, entityId],
     mutationFn: (id: string) => {
-      return serviceCaller(`/${entityName}/${id}`, {
+      return serviceCaller(`${entityName}/${id}`, {
         method: "DELETE",
       });
     },
@@ -79,7 +79,7 @@ export default function useEntity<T = any>(entityName: EntityNames) {
   const updateMutation = useMutation({
     mutationKey: [`update-${entityName}`, entityId],
     mutationFn: ({ id, ...payload }: { id: string; payload: any }) => {
-      return serviceCaller(`/${entityName}/${id}`, {
+      return serviceCaller(`${entityName}/${id}`, {
         method: "PATCH",
         body: payload,
       });

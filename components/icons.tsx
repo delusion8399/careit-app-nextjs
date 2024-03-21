@@ -9,6 +9,7 @@ import {
   CreditCard,
   File,
   FileText,
+  Footprints,
   HelpCircle,
   Home,
   Image,
@@ -83,4 +84,5 @@ export const Icons = {
   check: Check,
   network: Network,
   home: Home,
+  footprints: Footprints,
 };

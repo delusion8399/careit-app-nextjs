@@ -10,18 +10,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import useEntity from "@/hooks/use-entity";
-import { Faq } from "@/types/faq";
+import { Walkthrough } from "@/types/walkthrough";
 import { Edit, MoreVertical, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface CellActionProps {
-  data: Faq;
+  data: Walkthrough;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const { toast } = useToast();
-  const { deleteEntity } = useEntity("faq");
+  const { deleteEntity } = useEntity("walkthrough");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -31,11 +31,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setLoading(true);
       await deleteEntity(data._id);
       await router.refresh();
-      router.push(`/dashboard/faq`);
+      router.push(`/dashboard/walkthrough`);
       toast({
         variant: "destructive",
         title: "Success",
-        description: "FAQ deleted",
+        description: "Walkthrough deleted",
       });
     } catch (error: any) {
     } finally {
@@ -63,7 +63,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/faq/create?id=${data._id}`)}
+            onClick={() =>
+              router.push(`/dashboard/walkthrough/create?id=${data._id}`)
+            }
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

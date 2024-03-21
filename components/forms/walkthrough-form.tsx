@@ -32,39 +32,59 @@ import { useSession } from "next-auth/react";
 const formSchema = z.object({
   screen: z.string(),
   text: z.string(),
-  url: z.string().url("Invalid youtube URL").optional(),
+  step: z.string(),
+  title: z.string(),
 });
 
-type FaqFormValues = z.infer<typeof formSchema>;
+type WalkthroughFormValues = z.infer<typeof formSchema>;
 
-interface FaqFormProps {
+interface WalkthroughFormProps {
   initialData: any | null;
 }
 
-export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
+export const WalkthroughForm: React.FC<WalkthroughFormProps> = ({
+  initialData,
+}) => {
   const session = useSession();
-  const { createEntity, deleteEntity, updateEntity } = useEntity("faq");
+  const { createEntity, deleteEntity, updateEntity } = useEntity("walkthrough");
   const router = useRouter();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const title = initialData ? "Update FAQ" : "Create FAQ";
+  const title = initialData ? "Update Walkthrough" : "Create Walkthrough";
 
-  const toastMessage = initialData ? "FAQ updated." : "FAQ created.";
+  const toastMessage = initialData
+    ? "Walkthrough updated."
+    : "Walkthrough created.";
   const action = initialData ? "Save changes" : "Create";
 
   const defaultValues = {
     screen: "",
     text: "",
     url: "",
+    title: "",
+    step: "",
   };
 
-  const form = useForm<FaqFormValues>({
+  const form = useForm<WalkthroughFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const onSubmit = async (data: FaqFormValues) => {
+  const stepValues = {
+    home: [
+      { value: "point", label: "Points" },
+      { value: "shift", label: "Shift" },
+      { value: "raffle", label: "Raffle" },
+      { value: "chat", label: "Chat" },
+    ],
+    goals: [
+      { value: "goalName", label: "Goal Name" },
+      { value: "goalTimeline", label: "Goal Timeline" },
+    ],
+  };
+
+  const onSubmit = async (data: WalkthroughFormValues) => {
     try {
       setLoading(true);
 
@@ -84,7 +104,7 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
         description: toastMessage,
       });
       router.refresh();
-      router.push(`/dashboard/faq`);
+      router.push(`/dashboard/walkthrough`);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -101,11 +121,11 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
       setLoading(true);
       await router.refresh();
       initialData && (await deleteEntity(initialData._id));
-      router.push(`/dashboard/faq`);
+      router.push(`/dashboard/walkthrough`);
       toast({
         variant: "destructive",
         title: "Success",
-        description: "FAQ deleted",
+        description: "Walkthrough deleted",
       });
     } catch (error: any) {
     } finally {
@@ -154,10 +174,7 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a category"
-                        />
+                        <SelectValue defaultValue={field.value} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -180,12 +197,42 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
 
             <FormField
               control={form.control}
-              name="url"
+              name="step"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL</FormLabel>
+                  <FormLabel>Step</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {stepValues[form.watch("screen")]?.map((step) => (
+                        <SelectItem key={step.value} value={step.value}>
+                          {step.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="URL" {...field} />
+                    <Input disabled={loading} placeholder="Title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

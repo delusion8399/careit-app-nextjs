@@ -8,8 +8,8 @@ import { getServerSession } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Shadcn",
-  description: "Basic dashboard with Next.js and Shadcn",
+  title: "CAREit Human Technology",
+  description: "404 not found",
 };
 
 export default async function RootLayout({

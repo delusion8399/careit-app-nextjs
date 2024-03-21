@@ -19,4 +19,10 @@ export const navItems: NavItem[] = [
     icon: "help",
     label: "profile",
   },
+  {
+    title: "Walkthrough",
+    href: "/dashboard/walkthrough",
+    icon: "footprints",
+    label: "profile",
+  },
 ];
