@@ -1,6 +1,7 @@
 "use client";
 import { Goal } from "@/types/goal";
 import { ColumnDef } from "@tanstack/react-table";
+import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<Goal>[] = [
   {
@@ -23,6 +24,6 @@ export const columns: ColumnDef<Goal>[] = [
   {
     header: "Action",
     id: "actions",
-    // cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction data={row.original} />,
   },
 ];

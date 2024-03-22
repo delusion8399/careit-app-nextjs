@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
+import useEntity from "@/hooks/use-entity";
 import { Goal } from "@/types/goal";
 import { Edit, MoreVertical, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,19 +21,43 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const { toast } = useToast();
+  const { updateEntity } = useEntity("goal");
+  const { createEntity } = useEntity("goal/approve");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [rejectOpen, setRejectOpen] = useState(false);
   const router = useRouter();
 
-  const onConfirm = async () => {
+  const onApprove = async () => {
+    try {
+      setLoading(true);
+      await createEntity(data._id);
+      await router.refresh();
+      router.push(`/dashboard`);
+      toast({
+        variant: "default",
+        title: "Success",
+        description: "Payout approved",
+      });
+    } catch (error: any) {
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
+
+  const onReject = async () => {
     try {
       setLoading(true);
       await router.refresh();
-      router.push(`/dashboard/organizations`);
+      await updateEntity(data?._id, {
+        status: "inactive",
+      });
+      router.push(`/dashboard`);
       toast({
         variant: "destructive",
         title: "Success",
-        description: "Organization deleted",
+        description: "Payout rejected",
       });
     } catch (error: any) {
     } finally {
@@ -46,7 +71,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
+        onConfirm={onApprove}
+        loading={loading}
+      />
+      <AlertModal
+        isOpen={rejectOpen}
+        onClose={() => setRejectOpen(false)}
+        onConfirm={onReject}
         loading={loading}
       />
       <DropdownMenu modal={false}>
@@ -59,15 +90,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            onClick={() =>
-              router.push(`/dashboard/organizations/create?id=${data._id}`)
-            }
-          >
-            <Edit className="mr-2 h-4 w-4" /> Update
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
+            <Edit className="mr-2 h-4 w-4" /> Approve
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setRejectOpen(true)}>
+            <Trash className="mr-2 h-4 w-4" /> Reject
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

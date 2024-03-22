@@ -9,7 +9,8 @@ type EntityNames =
   | "faq"
   | "walkthrough"
   | "goal/children"
-  | "goal";
+  | "goal"
+  | "goal/approve";
 
 type FindQueryType = {
   page?: number;
