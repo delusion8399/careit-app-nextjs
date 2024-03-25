@@ -58,13 +58,7 @@ export const WalkthroughForm: React.FC<WalkthroughFormProps> = ({
     : "Walkthrough created.";
   const action = initialData ? "Save changes" : "Create";
 
-  const defaultValues = {
-    screen: "",
-    text: "",
-    url: "",
-    title: "",
-    step: "",
-  };
+  const defaultValues = {};
 
   const form = useForm<WalkthroughFormValues>({
     resolver: zodResolver(formSchema),
@@ -174,7 +168,10 @@ export const WalkthroughForm: React.FC<WalkthroughFormProps> = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue defaultValue={field.value} />
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a screen"
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -209,7 +206,10 @@ export const WalkthroughForm: React.FC<WalkthroughFormProps> = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue defaultValue={field.value} />
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a step"
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

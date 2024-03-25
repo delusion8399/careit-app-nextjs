@@ -53,11 +53,7 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
   const toastMessage = initialData ? "FAQ updated." : "FAQ created.";
   const action = initialData ? "Save changes" : "Create";
 
-  const defaultValues = {
-    screen: "",
-    text: "",
-    url: "",
-  };
+  const defaultValues = {};
 
   const form = useForm<FaqFormValues>({
     resolver: zodResolver(formSchema),
@@ -156,7 +152,7 @@ export const FaqForm: React.FC<FaqFormProps> = ({ initialData }) => {
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder="Select a category"
+                          placeholder="Select a screen"
                         />
                       </SelectTrigger>
                     </FormControl>

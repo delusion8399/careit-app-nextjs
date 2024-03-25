@@ -10,7 +10,9 @@ type EntityNames =
   | "walkthrough"
   | "goal/children"
   | "goal"
-  | "goal/approve";
+  | "goal/approve"
+  | "points"
+  | "organization/top-level-parent";
 
 type FindQueryType = {
   page?: number;
@@ -22,7 +24,8 @@ type FindQueryType = {
   status?: any;
   startDate?: any;
   endDate?: any;
-  organization?: any;
+  organization?: string;
+  _id?: string;
 };
 
 export default function useEntity<T = any>(entityName: EntityNames) {

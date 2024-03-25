@@ -85,4 +85,5 @@ export const Icons = {
   network: Network,
   home: Home,
   footprints: Footprints,
+  alertTriangle: AlertTriangle,
 };
